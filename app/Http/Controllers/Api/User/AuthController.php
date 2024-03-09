@@ -33,9 +33,9 @@ class AuthController extends ApiController
         $loginData = LoginData::from($request);
 
         try {
-            $user = $this->authService->login($loginData);
-            return $this->okResponse(__('auth.login.success'), new UserResource($user));
-        } catch (ModelNotFoundException | AuthenticationException) {
+            $token = $this->authService->login($loginData);
+            return $this->okResponse(__('auth.login.success'), compact('token'));
+        } catch (AuthenticationException) {
             return $this->clientErrorResponse(__('auth.login.fail'));
         }
     }

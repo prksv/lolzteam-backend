@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\ArticleCommentController;
+use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\User\AuthController;
+use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +18,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('user')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+    });
+});
+
+Route::prefix('articles')->group(function () {
+    Route::get('/', [ArticleController::class, 'index']);
+    Route::prefix('{article}')->group(function () {
+        Route::get('/', [ArticleController::class, 'show']);
+        Route::post('comments', [ArticleCommentController::class, 'store'])->middleware('auth:sanctum');
+    });
 });
 
 Route::prefix('auth')->group(function () {

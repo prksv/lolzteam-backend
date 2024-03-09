@@ -20,17 +20,19 @@ class AuthService
 
     /**
      * @throws AuthenticationException
+     *
+     * @return string User API Token
      */
-    public function login(LoginData $loginData): User
+    public function login(LoginData $loginData): string
     {
-        $user = User::where('username', $loginData->username)->firstOrFail();
-
-        $loggedIn = Auth::attempt($loginData->toArray());
+        $loggedIn = auth()->attempt($loginData->toArray());
 
         if (!$loggedIn) {
             throw new AuthenticationException();
         }
 
-        return $user;
+        $user = auth()->user();
+
+        return $user->createToken('api')->plainTextToken;
     }
 }
