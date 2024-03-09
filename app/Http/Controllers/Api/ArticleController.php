@@ -18,9 +18,9 @@ class ArticleController extends ApiController
 {
     public function index(Request $request)
     {
-        $articles = Article::all();
+        $articles = Article::paginate(10);
 
-        return $this->okResponse('OK', ArticlePreviewResource::collection($articles));
+        return $this->resourceCollectionResponse(ArticlePreviewResource::collection($articles), 'ok', false);
     }
 
     public function show(Request $request, Article $article)

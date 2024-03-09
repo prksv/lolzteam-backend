@@ -19,7 +19,7 @@ class ArticleResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'content' => $this->content,
-            'comments' => ArticleCommentResource::collection($this->comments),
+            'comments' => ArticleCommentResource::collection($this->comments->sortByDesc('id')),
         ];
     }
 }
