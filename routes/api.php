@@ -28,7 +28,8 @@ Route::prefix('articles')->group(function () {
     Route::get('/', [ArticleController::class, 'index']);
     Route::prefix('{article}')->group(function () {
         Route::get('/', [ArticleController::class, 'show']);
-        Route::post('comments', [ArticleCommentController::class, 'store'])->middleware('auth:sanctum');
+        Route::post('comments', [ArticleCommentController::class, 'store'])
+            ->middleware('auth:sanctum');
     });
 });
 

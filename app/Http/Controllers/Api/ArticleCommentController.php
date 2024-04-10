@@ -23,7 +23,11 @@ class ArticleCommentController extends ApiController
             'text' => 'required|min:5|max:30'
         ]);
 
-        $comment = $article->comments()->create([...$validated, 'user_id' => $request->user()->id]);
+        $comment = $article->comments()
+            ->create([
+                ...$validated,
+                'user_id' => $request->user()->id
+            ]);
 
         return $this->okResponse(__('comment.created'), new ArticleCommentResource($comment));
     }
